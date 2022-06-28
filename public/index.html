@@ -1,9 +1,13 @@
 <html>
     <head>
         <script>
-            document.addEventListener('DOMContentLoaded', event => {
-                new WebSocket('ws://localhost:3000/websocket');
+        document.addEventListener('DOMContentLoaded', event => {
+            const socket = new WebSocket('ws://localhost:3000/websocket');
+
+            socket.addEventListener('open', event => {
+                console.log("upgraded!!");
             });
+        });
         </script>
         <title>ws ws</title>
     </head>

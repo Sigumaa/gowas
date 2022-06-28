@@ -7,6 +7,9 @@
             socket.addEventListener('open', event => {
                 socket.send("ごわす！");
             });
+            socket.addEventListener('message', event => {
+                console.log(event.data);
+            });
         });
         </script>
         <title>ws ws</title>

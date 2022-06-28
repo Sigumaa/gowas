@@ -14,6 +14,20 @@ type Frame struct {
 	payloadData   []byte
 }
 
+func buildFrame(msg string) *Frame {
+	message := []byte(msg)
+	return &Frame{
+		fin:           1,
+		rsv1:          0,
+		rsv2:          0,
+		rsv3:          0,
+		opcode:        1,
+		mask:          0,
+		payloadLength: len(message),
+		payloadData:   message,
+	}
+}
+
 func (f *Frame) parse(buffer []byte) {
 	index := 0
 	firstByte := int(buffer[index])
@@ -56,4 +70,25 @@ func (f *Frame) parse(buffer []byte) {
 	}
 
 	f.payloadData = payload
+}
+
+func (f *Frame) toBytes() (data[]byte) {
+	bits := 0
+	bits |= (f.fin << 7)
+	bits |= (f.rsv1 << 6)
+	bits |= (f.rsv2 << 5)
+	bits |= (f.rsv3 << 4)
+	bits |= f.opcode
+
+	data = append(data,byte(bits))
+
+	bits = 0
+	bits |= (f.mask << 7)
+	bits |= f.payloadLength
+
+	data = append(data, byte(bits))
+
+	data = append(data, f.payloadData...)
+
+	return data
 }

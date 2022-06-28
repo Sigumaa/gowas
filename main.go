@@ -45,6 +45,10 @@ func handlerUpgrade(w http.ResponseWriter, r *http.Request) {
 	readWriter.WriteString("\r\n")
 	readWriter.Flush()
 
+	sendFrame := buildFrame("ごわす！")
+	readWriter.Write(sendFrame.toBytes())
+	readWriter.Flush()
+
 	data := make([]byte, bufferSize)
 	for {
 		frame := Frame{}
